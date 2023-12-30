@@ -16,8 +16,11 @@ Delete: remove resource
 CRUD: Create/Read/Update/Delete
 
 REST API codes
+
 200 - Success
+
 400 - something wrong with the request
+
 500 - something wrong with the server
 
 Idempotent - Making multiple requests is same as making a single request. POST is not idempotent.
