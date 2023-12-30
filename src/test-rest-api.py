@@ -1,9 +1,14 @@
+
+import os
 from typing import List
 
 from bfxapi import Client, REST_HOST
 from bfxapi.types import Notification, Order
 from bfxapi.types import TradingPairTrade
 from bfxapi.types import Wallet
+
+YOUR_API_KEY = os.getenv('YOUR_API_KEY')
+YOUR_API_SECRET = os.environ.get('YOUR_API_SECRET')
 
 bfx = Client(
     rest_host=REST_HOST,
