@@ -21,7 +21,7 @@ async def on_open():
     # in the future
     print("WebSocket connection opened")
     # this line awaits the subscription to the "candles" channel
-    await bfx.wss.subscribe("candles", key="trade:1m:tBTCUSD")
+    await bfx.wss.subscribe("candles", key="trade:1m:tTESTBTC:TESTUSD")
     print("Subscribed to candles channel for 1-minute intervals")
 
 bfx.wss.run()
