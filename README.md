@@ -29,3 +29,6 @@ REST allows data transfer in XML, JSON and HTML.
 
 # Some notes on Websockets
 Useful for broacasting services.
+
+# Some trading terms
+[Candlestick](https://www.investopedia.com/trading/candlestick-charting-what-is-it/)
