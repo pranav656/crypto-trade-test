@@ -2,21 +2,7 @@
 from abc import ABC, abstractmethod
 from collections import deque
 import pandas as pd
-
-class FixedLengthFifo:
-    def __init__(self, max_length):
-        self.queue = deque(maxlen=max_length)
-
-    def push(self, item):
-        self.queue.append(item)
-    
-    def pop(self):
-        if self.is_empty():
-            raise IndexError("pop from an empty queue")
-    
-    def __len__(self):
-        return len(self.queue)
-    
+   
 class BaseStrategy(ABC):
     @abstractmethod
     def calculate_signals(self):
@@ -31,30 +17,44 @@ class BaseStrategy(ABC):
         pass
 
 class SimpleMovingAverageStrategy(BaseStrategy):
-    def __init__(self, prices, window):
-        self.prices = prices
+    def __init__(self, data, window):
+        self.data = data
         self.window = window
         # Signal indicates a moving average crossover
-        self.signals = None
+        self.signal = None
+
+    def update_data(self, new_data):
+        self.data = pd.concat([self.data, new_data])
     
     def calculate_signals(self):
-        self.moving_average=self.prices.rolling(window=self.window).mean()
-        print(self.moving_average)
-    
-    #TODO
+        latest_ma = self.data['Close'].rolling(window=self.window).mean().iloc[-1]
+        self.signal = True if(self.data['Close'].iloc[-1] > latest_ma) else False
+        
     def execute_trades(self):
-        return super().execute_trades()
+        print("BUY") if self.signal else print("SELL")
     
     def run_strategy(self):
         self.calculate_signals()
         self.execute_trades()
 
-# create a FIFO queue and push dummy data into it
-fifo_queue = FixedLengthFifo(50)
-for i in range(0, 50):
-    fifo_queue.push(i)
+# create a list and push dummy data into it
+start_price_data = {
+    'Date': pd.date_range(start='2023-01-01', periods=100),
+    'Close': [189 + i for i in range(100)]
+}
 
-# test strategy for 20 datapoints
-df = pd.DataFrame(list(fifo_queue.queue))
+# test strategy for dummy data points based on 20 point
+# moving average, sells on a dowanard trend and buys on
+# an upward trend
+df = pd.DataFrame(start_price_data)
 strategy = SimpleMovingAverageStrategy(df, 20)
 strategy.calculate_signals()
+
+for i in range(100):
+    dummy_current_data = {
+        'Date': pd.date_range(start='2023-01-01', periods=1),
+        'Close': [95+i]
+    }
+    strategy.update_data(pd.DataFrame(dummy_current_data))
+    strategy.calculate_signals()
+    strategy.execute_trades()
