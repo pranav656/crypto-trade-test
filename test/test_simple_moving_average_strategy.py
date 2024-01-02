@@ -1,4 +1,4 @@
-from src.simple_moving_average_strategy import SimpleMovingAverageStrategy
+from ..src.simple_moving_average_strategy import SimpleMovingAverageStrategy
 import pandas as pd
 
 def test_simple_moving_average_strategy():
