@@ -20,7 +20,12 @@ jobs:
       run: |
         pip install -r requirements.txt
         pip list  # Add this line to print installed packages for debugging
-
+        
+    - name: Set PYTHONPATH
+      run: |
+        echo "PYTHONPATH=${{ github.workspace }}" >> $GITHUB_ENV
+        echo "Added PYTHONPATH=${{ github.workspace }} to environment"
+        
     - name: Debug information
       run: |
         ls -R  # Add this line to print directory structure for debugging
